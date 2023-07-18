@@ -23,36 +23,32 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "pnpm test:watch",
-    "build": "pnpm build:cjs && pnpm build:esm",
+    "build": "pnpm wasmCopy && pnpm build:cjs && pnpm build:esm",
     "build:cjs": "tsc -p tsconfig.json --module commonjs --outDir dist/cjs --target es5",
     "build:esm": "tsc -p tsconfig.json --module esNext --outDir dist/esm --target es6",
-    "test": "jest",
-    "test:watch": "pnpm test -- --watch --silent",
     "clean": "rimraf -rf ./dist .turbo",
     "lint": "eslint './src/**/*.{js,jsx,ts,tsx}'",
-    "types-check": "tsc --noEmit"
+    "types-check": "tsc --noEmit",
+    "wasmCopy": "copyfiles -f ./node_modules/sql.js/dist/sql-wasm.wasm ./dist/cjs && copyfiles -f ./node_modules/sql.js/dist/sql-wasm.wasm ./dist/esm"
   },
   "devDependencies": {
-    "@testing-library/react": "14.0.0",
-    "@testing-library/react-hooks": "8.0.1",
-    "@types/jest": "29.5.3",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
+    "@types/sql.js": "^1.4.4",
     "@typescript-eslint/eslint-plugin": "6.0.0",
     "@typescript-eslint/parser": "6.0.0",
+    "copyfiles": "^2.4.1",
     "eslint": "8.45.0",
     "eslint-config-custom": "workspace:*",
     "eslint-plugin-tree-shaking": "^1.10.0",
-    "jest": "29.6.1",
-    "jest-environment-jsdom": "29.6.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "rimraf": "5.0.1",
-    "ts-jest": "29.1.1",
+    "sql.js": "1.8.0",
     "ts-node": "10.9.1",
-    "typescript": "5.1.6",
-    "tsconfig": "workspace:*"
+    "tsconfig": "workspace:*",
+    "typescript": "5.1.6"
   },
   "peerDependencies": {
     "react": "^16.9.0 || ^17.0.0 || ^18.2.0",
@@ -62,7 +58,8 @@
     "node": ">=16.15.0"
   },
   "files": [
-    "dist"
+    "dist",
+    "bin"
   ],
   "repository": {
     "type": "git",
