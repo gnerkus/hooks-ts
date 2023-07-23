@@ -1,10 +1,11 @@
-import { useEffect, useState, createContext } from "react";
+'use client'
+import * as React from "react";
 import { SqlJsStatic, Database } from "sql.js";
 import initSqlJs from "sql.js";
 
 const initClient = async () => {
   const SQL = await initSqlJs({
-    locateFile: (file: string) => `../${file}`,
+    locateFile: (file: string) => `https://sql.js.org/dist/${file}`,
   });
   return SQL;
 };
@@ -14,7 +15,7 @@ type SQLClientContextType = {
   db: Database | null;
 };
 
-export const SQLClientContext = createContext<SQLClientContextType | null>(
+export const SQLClientContext = React.createContext<SQLClientContextType | null>(
   null
 );
 
@@ -23,10 +24,10 @@ type SQLClientProviderProps = {
 };
 
 export const SQLClientProvider = ({ children }: SQLClientProviderProps) => {
-  const [SQL, setSQL] = useState<SqlJsStatic | null>(null);
-  const [db, setDb] = useState<Database | null>(null);
+  const [SQL, setSQL] = React.useState<SqlJsStatic | null>(null);
+  const [db, setDb] = React.useState<Database | null>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     async function init() {
       const client = await initClient();
       setSQL(client);
