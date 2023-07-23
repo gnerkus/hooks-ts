@@ -8,6 +8,9 @@
     },
     "lint": {},
     "check-types": {},
+    "deploy": {
+      "dependsOn": ["build", "test", "lint"]
+    },
     "dev": {
       "cache": false,
       "persistent": true
