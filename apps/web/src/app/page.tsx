@@ -1,5 +1,7 @@
+'use client'
 import { Metadata } from "next";
 import { SQLClientProvider } from "hooks-ts";
+import QueryRunner from "../components/QueryRunner";
 
 const CARD_CONTENT = [
   {
@@ -34,6 +36,7 @@ export default function Home() {
             Turborepo Example
           </span>
         </h1>
+        <QueryRunner />
       </main>
     </div>
     </SQLClientProvider>
