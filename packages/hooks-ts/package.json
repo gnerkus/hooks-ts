@@ -1,7 +1,7 @@
 {
-  "name": "hooks-ts",
+  "name": "@nanotome/hooks-ts",
   "private": false,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "React hook library, written in Typescript.",
   "author": "Ifeanyi Oraelosi <ifeanyi@nanotome.com>",
   "homepage": "https://github.com/nanotome/hooks-ts",
