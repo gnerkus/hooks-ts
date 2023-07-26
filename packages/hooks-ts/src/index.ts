@@ -1,1 +1,1 @@
-export {SQLClientProvider} from "./useSQL/SQLClientProvider";
+export {SQLClientProvider, useSQLClient} from "./useSQL/SQLClientProvider";
