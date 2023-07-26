@@ -14,11 +14,9 @@
     "lint": "turbo lint",
     "clean": "turbo clean",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "types-check": "turbo run types-check",
-    "publish-packages": "turbo run build lint test && changeset version && changeset publish"
+    "types-check": "turbo run types-check"
   },
   "devDependencies": {
-    "@changesets/cli": "2.26.2",
     "eslint": "^7.32.0",
     "eslint-config-custom": "workspace:*",
     "prettier": "^2.7.1",
