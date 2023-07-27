@@ -3,16 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "pnpm wasmCopy && next dev",
+    "build": "pnpm wasmCopy && next build",
+    "start": "pnpm wasmCopy && next start",
+    "lint": "next lint",
+    "wasmCopy": "copyfiles -f ./node_modules/@nanotome/hooks-ts/dist/cjs/sql-wasm.wasm ./public"
   },
   "dependencies": {
     "next": "^13.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "hooks-ts": "workspace:*"
+    "@nanotome/hooks-ts": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^18.11.17",
@@ -24,6 +25,7 @@
     "tailwind-config": "workspace:*",
     "tailwindcss": "^3.2.4",
     "tsconfig": "workspace:*",
-    "typescript": "^4.9.4"
+    "typescript": "4.9.4",
+    "copyfiles": "2.4.1"
   }
 }
