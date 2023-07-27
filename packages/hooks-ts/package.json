@@ -22,13 +22,15 @@
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "dev": "pnpm test:watch",
-    "build": "pnpm build:cjs && pnpm build:esm",
+    "dev": "pnpm wasmCopy:dev && pnpm test:watch",
+    "build": "pnpm wasmCopy && pnpm build:cjs && pnpm build:esm",
     "build:cjs": "tsc -p tsconfig.json --module commonjs --outDir dist/cjs --target es5",
     "build:esm": "tsc -p tsconfig.json --module esNext --outDir dist/esm --target es6",
     "clean": "rimraf -rf ./dist .turbo",
     "lint": "eslint ./src/**/*.{js,jsx,ts,tsx}",
-    "types-check": "tsc --noEmit"
+    "types-check": "tsc --noEmit",
+    "wasmCopy": "copyfiles -f ./node_modules/sql.js/dist/sql-wasm.wasm ./dist/cjs && copyfiles -f ./node_modules/sql.js/dist/sql-wasm.wasm ./dist/esm",
+    "wasmCopy:dev": "copyfiles -f ./node_modules/sql.js/dist/sql-wasm.wasm ./src"
   },
   "devDependencies": {
     "@types/node": "20.4.2",
@@ -37,7 +39,7 @@
     "@types/sql.js": "^1.4.4",
     "@typescript-eslint/eslint-plugin": "6.0.0",
     "@typescript-eslint/parser": "6.0.0",
-    "copyfiles": "^2.4.1",
+    "copyfiles": "2.4.1",
     "eslint": "8.45.0",
     "eslint-config-custom": "workspace:*",
     "eslint-plugin-tree-shaking": "^1.10.0",

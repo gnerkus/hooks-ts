@@ -41,3 +41,6 @@ dist/
 
 # Notes
 notes/
+
+# Binary files
+*.wasm
