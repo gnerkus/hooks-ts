@@ -1,7 +1,7 @@
 {
   "name": "@nanotome/hooks-ts",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React hook library, written in Typescript.",
   "author": "Ifeanyi Oraelosi <ifeanyi@nanotome.com>",
   "homepage": "https://github.com/nanotome/hooks-ts",
@@ -30,7 +30,8 @@
     "lint": "eslint ./src/**/*.{js,jsx,ts,tsx}",
     "types-check": "tsc --noEmit",
     "wasmCopy": "copyfiles -f ./node_modules/sql.js/dist/sql-wasm.wasm ./dist/cjs && copyfiles -f ./node_modules/sql.js/dist/sql-wasm.wasm ./dist/esm",
-    "wasmCopy:dev": "copyfiles -f ./node_modules/sql.js/dist/sql-wasm.wasm ./src"
+    "wasmCopy:dev": "copyfiles -f ./node_modules/sql.js/dist/sql-wasm.wasm ./src",
+    "prepack": "copyfiles -f ../../LICENSE . && copyfiles -f ../../README.md ."
   },
   "devDependencies": {
     "@types/node": "20.4.2",
@@ -60,7 +61,8 @@
   },
   "files": [
     "dist",
-    "bin"
+    "LICENSE",
+    "README.md"
   ],
   "repository": {
     "type": "git",

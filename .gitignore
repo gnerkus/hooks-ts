@@ -44,3 +44,7 @@ notes/
 
 # Binary files
 *.wasm
+
+# Prepublish files
+packages/**/README.md
+packages/**/LICENSE
