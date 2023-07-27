@@ -1,5 +1,5 @@
 'use client'
-import { useSQLClient } from "hooks-ts";
+import { useSQLClient } from "@nanotome/hooks-ts";
 import { useEffect, useState } from "react";
 
 export default function QueryRunner() {

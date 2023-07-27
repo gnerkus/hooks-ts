@@ -1,6 +1,6 @@
 'use client'
 import { Metadata } from "next";
-import { SQLClientProvider } from "hooks-ts";
+import { SQLClientProvider } from "@nanotome/hooks-ts";
 import QueryRunner from "../components/QueryRunner";
 
 const CARD_CONTENT = [

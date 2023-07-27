@@ -7,7 +7,7 @@ module.exports = {
       // by next.js will be dropped.
       ...config.resolve.fallback,  
 
-      fs: false, // the solution
+      fs: false
     };
     
     return config;
