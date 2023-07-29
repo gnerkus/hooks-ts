@@ -2,17 +2,13 @@
 import * as React from "react";
 import { SqlJsStatic, Database } from "sql.js";
 import initSqlJs from "sql.js";
+import { SQLClientContextType } from "../types";
 
 const initClient = async () => {
   const SQL = await initSqlJs({
     locateFile: (file: string) => `../${file}`,
   });
   return SQL;
-};
-
-type SQLClientContextType = {
-  SQL: SqlJsStatic | null;
-  db: Database | null;
 };
 
 export const SQLClientContext = React.createContext<
