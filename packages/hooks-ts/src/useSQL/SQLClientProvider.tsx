@@ -27,9 +27,10 @@ export const useSQLClient = () => {
 
 type SQLClientProviderProps = {
   children?: React.ReactNode;
+  existingDb?: ArrayLike<number> | Buffer | null;
 };
 
-export const SQLClientProvider = ({ children }: SQLClientProviderProps) => {
+export const SQLClientProvider = ({ children, existingDb }: SQLClientProviderProps) => {
   const [SQL, setSQL] = React.useState<SqlJsStatic | null>(null);
   const [db, setDb] = React.useState<Database | null>(null);
 
@@ -37,7 +38,7 @@ export const SQLClientProvider = ({ children }: SQLClientProviderProps) => {
     async function init() {
       const client = await initClient();
       setSQL(client);
-      setDb(new client.Database());
+      setDb(new client.Database(existingDb));
     }
 
     init();
