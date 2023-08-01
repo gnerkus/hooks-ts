@@ -1,8 +1,16 @@
 "use client";
-import * as React from "react";
+import {
+  useCallback,
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 import { SqlJsStatic, Database } from "sql.js";
 import initSqlJs from "sql.js";
 import { SQLClientContextType } from "../types";
+import { saveAs } from "file-saver";
 
 const initClient = async () => {
   const SQL = await initSqlJs({
@@ -11,12 +19,12 @@ const initClient = async () => {
   return SQL;
 };
 
-export const SQLClientContext = React.createContext<
-  SQLClientContextType | undefined
->(undefined);
+export const SQLClientContext = createContext<SQLClientContextType | undefined>(
+  undefined
+);
 
 export const useSQLClient = () => {
-  const sqlClient = React.useContext(SQLClientContext);
+  const sqlClient = useContext(SQLClientContext);
   if (sqlClient === undefined) {
     throw new Error(
       "No SQLClientContext set, use SQLClientProvider to set one"
@@ -26,15 +34,18 @@ export const useSQLClient = () => {
 };
 
 type SQLClientProviderProps = {
-  children?: React.ReactNode;
+  children?: ReactNode;
   existingDb?: ArrayLike<number> | Buffer | null;
 };
 
-export const SQLClientProvider = ({ children, existingDb }: SQLClientProviderProps) => {
-  const [SQL, setSQL] = React.useState<SqlJsStatic | null>(null);
-  const [db, setDb] = React.useState<Database | null>(null);
+export const SQLClientProvider = ({
+  children,
+  existingDb,
+}: SQLClientProviderProps) => {
+  const [SQL, setSQL] = useState<SqlJsStatic | null>(null);
+  const [db, setDb] = useState<Database | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function init() {
       const client = await initClient();
       setSQL(client);
@@ -44,8 +55,37 @@ export const SQLClientProvider = ({ children, existingDb }: SQLClientProviderPro
     init();
   }, []);
 
+  /**
+   * Loads a database from a file
+   */
+  const loadDB = useCallback((file: File) => {
+    if (!SQL) {
+      throw new Error("SQL client has not bee initialized");
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const uInt8Array = new Uint8Array(reader.result as ArrayBuffer);
+      setDb(new SQL.Database(uInt8Array));
+    };
+    reader.readAsArrayBuffer(file);
+  }, []);
+
+  /**
+   * Saves the database to a file
+   */
+  const saveDB = useCallback((filename: string) => {
+    if (!db) {
+      throw new Error(
+        "NO db has been initialized. Please initialize the db in the SQLClientProvider component."
+      );
+    }
+    const dbBitArray = db.export();
+    saveAs(new Blob([dbBitArray]), filename || "db.sqlite");
+  }, [db])
+
   return (
-    <SQLClientContext.Provider value={{ SQL, db }}>
+    <SQLClientContext.Provider value={{ db, loadDB, saveDB }}>
       {children}
     </SQLClientContext.Provider>
   );
