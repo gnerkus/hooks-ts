@@ -12,7 +12,7 @@ import initSqlJs from "sql.js";
 import { SQLClientContextType } from "../types";
 import { saveAs } from "file-saver";
 
-const initClient = async () => {
+const initClient = async (): Promise<SqlJsStatic> => {
   const SQL = await initSqlJs({
     locateFile: (file: string) => `../${file}`,
   });
@@ -23,7 +23,7 @@ export const SQLClientContext = createContext<SQLClientContextType | undefined>(
   undefined
 );
 
-export const useSQLClient = () => {
+export const useSQLClient = (): SQLClientContextType => {
   const sqlClient = useContext(SQLClientContext);
   if (sqlClient === undefined) {
     throw new Error(
@@ -69,7 +69,7 @@ export const SQLClientProvider = ({
       setDb(new SQL.Database(uInt8Array));
     };
     reader.readAsArrayBuffer(file);
-  }, []);
+  }, [SQL]);
 
   /**
    * Saves the database to a file

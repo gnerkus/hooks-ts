@@ -1,4 +1,4 @@
-import { SqlJsStatic, Database } from "sql.js";
+import { Database } from "sql.js";
 
 export type SQLClientContextType = {
   db: Database | null;
