@@ -1,8 +1,9 @@
 # hooks-ts
+
 Personal collection of React hooks
 
 ```bash
-npm i @nanotome/hooks-ts
+npm i sql.js @nanotome/hooks-ts
 ```
 
 <div align="center">
@@ -12,12 +13,15 @@ npm i @nanotome/hooks-ts
 ## 📖 Summary
 
 <!-- HOOKS:START -->
+
 ### SQLClientProvider, useSQLClient
+
 A React hook wrapper around [sql.js](https://sql.js.org/#/)
 
 **Usage**
+
 ```tsx
-import { SQLClientProvider, useSQLClient } from '@nanotome/hooks-ts';
+import { SQLClientProvider, useSQLClient } from "@nanotome/hooks-ts";
 
 function ResultsTable({ columns, values }) {
   return (
@@ -31,16 +35,13 @@ function ResultsTable({ columns, values }) {
       </thead>
 
       <tbody>
-        {
-          // values is an array of arrays representing the results of the query
-          values.map((row, i) => (
-            <tr key={i}>
-              {row.map((value, i) => (
-                <td key={i}>{value}</td>
-              ))}
-            </tr>
-          ))
-        }
+        {values.map((row, i) => (
+          <tr key={i}>
+            {row.map((value, i) => (
+              <td key={i}>{value}</td>
+            ))}
+          </tr>
+        ))}
       </tbody>
     </table>
   );
@@ -52,12 +53,9 @@ function QueryRunner() {
 
   function exec(sql: string) {
     try {
-      // The sql is executed synchronously on the UI thread.
-      // You may want to use a web worker here instead
-      setResults(db.exec(sql)); // an array of objects is returned
+      setResults(db.exec(sql));
       setError(null);
     } catch (err) {
-      // exec throws an error when the SQL statement is invalid
       setError(err);
       setResults([]);
     }
@@ -73,6 +71,7 @@ function QueryRunner() {
 }
 
 function App() {
+  // The provider uses the default wasm file hosted on sql.js' CDN
   return (
     <SQLClientProvider>
       <QueryRunner />

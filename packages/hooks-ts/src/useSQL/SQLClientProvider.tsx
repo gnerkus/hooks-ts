@@ -12,9 +12,10 @@ import initSqlJs from "sql.js";
 import { SQLClientContextType } from "../types";
 import { saveAs } from "file-saver";
 
-const initClient = async (): Promise<SqlJsStatic> => {
+const initClient = async (wasmFileLocation?: string): Promise<SqlJsStatic> => {
   const SQL = await initSqlJs({
-    locateFile: (file: string) => `../${file}`,
+    locateFile: (file: string) =>
+      wasmFileLocation || `https://sql.js.org/dist/${file}`,
   });
   return SQL;
 };
@@ -34,11 +35,13 @@ export const useSQLClient = (): SQLClientContextType => {
 };
 
 type SQLClientProviderProps = {
+  wasmFile?: any;
   children?: ReactNode;
   existingDb?: ArrayLike<number> | Buffer | null;
 };
 
 export const SQLClientProvider = ({
+  wasmFile,
   children,
   existingDb,
 }: SQLClientProviderProps) => {
@@ -47,7 +50,7 @@ export const SQLClientProvider = ({
 
   useEffect(() => {
     async function init() {
-      const client = await initClient();
+      const client = await initClient(wasmFile);
       setSQL(client);
       setDb(new client.Database(existingDb));
     }
@@ -58,31 +61,37 @@ export const SQLClientProvider = ({
   /**
    * Loads a database from a file
    */
-  const loadDB = useCallback((file: File) => {
-    if (!SQL) {
-      throw new Error("SQL client has not bee initialized");
-    }
+  const loadDB = useCallback(
+    (file: File) => {
+      if (!SQL) {
+        throw new Error("SQL client has not bee initialized");
+      }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const uInt8Array = new Uint8Array(reader.result as ArrayBuffer);
-      setDb(new SQL.Database(uInt8Array));
-    };
-    reader.readAsArrayBuffer(file);
-  }, [SQL]);
+      const reader = new FileReader();
+      reader.onload = () => {
+        const uInt8Array = new Uint8Array(reader.result as ArrayBuffer);
+        setDb(new SQL.Database(uInt8Array));
+      };
+      reader.readAsArrayBuffer(file);
+    },
+    [SQL]
+  );
 
   /**
    * Saves the database to a file
    */
-  const saveDB = useCallback((filename: string) => {
-    if (!db) {
-      throw new Error(
-        "NO db has been initialized. Please initialize the db in the SQLClientProvider component."
-      );
-    }
-    const dbBitArray = db.export();
-    saveAs(new Blob([dbBitArray]), filename || "db.sqlite");
-  }, [db])
+  const saveDB = useCallback(
+    (filename: string) => {
+      if (!db) {
+        throw new Error(
+          "NO db has been initialized. Please initialize the db in the SQLClientProvider component."
+        );
+      }
+      const dbBitArray = db.export();
+      saveAs(new Blob([dbBitArray]), filename || "db.sqlite");
+    },
+    [db]
+  );
 
   return (
     <SQLClientContext.Provider value={{ db, loadDB, saveDB }}>
